@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Salvi | A Premium Tribute</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #c5a059;
+            --dark-gold: #8e6d2f;
+            --bg-deep: #0a0a0b;
+            --card-glass: rgba(20, 20, 22, 0.7);
+            --text-main: #e0e0e0;
+            --transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom Cinematic Cursor */
+        #cursor {
+            width: 20px;
+            height: 20px;
+            background: var(--gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        /* Background Visuals */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0b 100%);
+            z-index: -2;
+        }
+
+        .glow {
+            position: fixed;
+            width: 40vw; height: 40vw;
+            background: radial-gradient(circle, rgba(197, 160, 89, 0.05) 0%, transparent 70%);
+            top: -10%; right: -10%;
+            z-index: -1;
+        }
+
+        /* Smooth Scroll Container */
+        .main-wrapper { padding: 0 5%; }
+
+        /* Hero Section */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 12vw, 8rem);
+            font-style: italic;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gold);
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: heroFade 1.5s forwards 0.5s;
+        }
+
+        .hero-name {
+            font-size: 1.2rem;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-top: -30px;
+            opacity: 0;
+            animation: heroFade 1.5s forwards 1s;
+        }
+
+        @keyframes heroFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Content Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        section.visible { opacity: 1; transform: translateY(0); }
+
+        .content-box {
+            background: var(--card-glass);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 80px;
+            border-radius: 4px;
+            max-width: 1000px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .content-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 40px;
+        }
+
+        .letter-p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        /* Interactive Timeline / Moments */
+        .moments-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .moment-item {
+            border-left: 1px solid var(--gold);
+            padding-left: 20px;
+        }
+
+        .moment-item h4 { color: var(--gold); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
+
+        /* Final Question Section */
+        .decision-box {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+            position: relative;
+            min-height: 100px;
+        }
+
+        .cta-btn {
+            padding: 20px 50px;
+            border: 1px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn:hover {
+            background: var(--gold);
+            color: black;
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.4);
+        }
+
+        #noBtn {
+            position: absolute;
+            z-index: 10;
+        }
+
+        /* Surprise Overlay */
+        .final-overlay {
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: var(--bg-deep);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 1s;
+        }
+
+        .handwritten {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            color: var(--gold);
+        }
+
+        /* Audio Control */
+        .audio-player {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .play-pause {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .content-box { padding: 40px 20px; }
+            .hero-title { font-size: 4rem; }
+            .moments-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+    <div class="ambient-bg"></div>
+    <div class="glow"></div>
+
+    <div class="audio-player">
+        <button class="play-pause" id="audioToggle">Enable Audio</button>
+        <audio id="bgMusic" loop>
+            <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div class="main-wrapper">
+        <header>
+            <h1 class="hero-title">Forgiveness</h1>
+            <p class="hero-name">Saluu & Arjun</p>
+        </header>
+
+        <section id="apology">
+            <div class="content-box">
+                <h2>I was wrong.</h2>
+                <p class="letter-p">I know I did so many things wrong but this time I am not fine I am too much distrubed my mental health is like totaly at worst condition. Or mai galtiya bahut karta hu par jaan kar nahii or</p>
+                <p class="letter-p">I hate the silence between us. I hate that I caused you pain. You are the gold in my life—the light I never want to lose, whereas I am the darkest part of your life I make you cry everytime, how bad I am I am not able to make you happy I am the wrost husband/bf ever.</p>
+                <p class="letter-p" style="font-style: italic; border-left: 2px solid var(--gold); padding-left: 20px; margin-top: 30px;">
+                    "I am not just asking for a second chance. I am asking for the opportunity to show you how much I’ve learned, and how much you truly mean to me. I know this is not enough You desearve better but what if I became thee best for you but at this time I am not fine sorry for everythig."
+                </p>
+            </div>
+        </section>
+
+
+        <section id="interaction">
+            <div class="content-box decision-box">
+                <h2>A New Beginning?</h2>
+                <p>Can we put this behind us and start a fresh chapter together?</p>
+                
+                <div class="btn-container">
+                    <button class="cta-btn" onclick="showFinal()">Yes, Let's Start Over</button>
+                    <button class="cta-btn" id="noBtn">No</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="final-overlay" id="finalOverlay">
+        <h2 class="hero-name" style="margin-bottom: 20px; letter-spacing: 15px;">Always</h2>
+        <h1 class="handwritten">I Love You, Saluu</h1>
+        <p style="margin-top: 20px; opacity: 0.6; font-size: 0.8rem; letter-spacing: 5px;">Yours, Arjun</p>
+    </div>
+
+    <script>
+        // 1. Cinematic Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // 2. Scroll Animations (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+
+        // 3. Audio Toggle Logic
+        const audio = document.getElementById('bgMusic');
+        const audioBtn = document.getElementById('audioToggle');
+        
+        audioBtn.onclick = () => {
+            if (audio.paused) {
+                audio.play();
+                audioBtn.innerText = "Mute Music";
+            } else {
+                audio.pause();
+                audioBtn.innerText = "Play Music";
+            }
+        };
+
+        // 4. The Elusive "No" Button (Professional Logic)
+        const noBtn = document.getElementById('noBtn');
+        noBtn.addEventListener('mouseenter', () => {
+            const maxX = window.innerWidth - 200;
+            const maxY = window.innerHeight - 100;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+
+        // 5. Final Celebration
+        function showFinal() {
+            const overlay = document.getElementById('finalOverlay');
+            overlay.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
